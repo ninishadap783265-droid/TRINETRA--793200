@@ -1,8 +1,8 @@
-# TRINETRA - Smart Roadside Safety - Byndihati 793200
+# TRINETRA - Smart Roadside Safety - meghalaya (east jaintia hills)793200
 Team: Nini Shadap D25-A041 B.A 3rd Sem Don Bosco College Byndihati 
 
 ## Problem
-NH-6 Byndihati fog <10m, wrong side overtaking, theft needs gas cutter, 108 delay 45 mins, no SOS, animals.
+meghalaya fog <10m, wrong side overtaking, theft needs gas cutter, 108 delay 45 mins, no SOS, animals.
 
 ## Solution
 Single Grill 10mm + Stone Base 40kg + IP65 Box + Solar 20W + Theft Proof (Vibration + GPS NEO-6M + 90dB scream + Live Map SMS) + Fog PIR Eye (AM312 37C detects 7-10m LED Amber + Buzzer) + QR SOS OTP 256-bit 2 mins changes.
