@@ -1,4 +1,4 @@
-// TRINETRA - Nini Shadap D25-A041 793200 9863347940
+// TRINETRA - Nini Shadap D25-A041 793200 
 #include <TinyGPS++.h>
 #include <HardwareSerial.h>
 #define PIR_PIN 13
@@ -17,7 +17,6 @@ float baseLat=0, baseLng=0;
 bool baseSet=false;
 unsigned long lastPIR=0, lastTheft=0;
 String police="+91XXXXXXXXXX";
-String college="+919863347940";
 void setup(){
  Serial.begin(115200);
  gpsSerial.begin(9600,SERIAL_8N1,GPS_RX,GPS_TX);
