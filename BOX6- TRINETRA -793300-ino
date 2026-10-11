@@ -1,0 +1,63 @@
+// TRINETRA - Nini Shadap D25-A041 793200 9863347940
+#include <TinyGPS++.h>
+#include <HardwareSerial.h>
+#define PIR_PIN 13
+#define VIBRATION_PIN 27
+#define BUZZER_PIN 5
+#define LED_PIN 23
+#define SOS_BUTTON 15
+#define GPS_RX 16
+#define GPS_TX 17
+#define SIM_RX 18
+#define SIM_TX 19
+HardwareSerial gpsSerial(2);
+HardwareSerial simSerial(1);
+TinyGPSPlus gps;
+float baseLat=0, baseLng=0;
+bool baseSet=false;
+unsigned long lastPIR=0, lastTheft=0;
+String police="+91XXXXXXXXXX";
+String college="+919863347940";
+void setup(){
+ Serial.begin(115200);
+ gpsSerial.begin(9600,SERIAL_8N1,GPS_RX,GPS_TX);
+ simSerial.begin(9600,SERIAL_8N1,SIM_RX,SIM_TX);
+ pinMode(PIR_PIN,INPUT);
+ pinMode(VIBRATION_PIN,INPUT);
+ pinMode(BUZZER_PIN,OUTPUT);
+ pinMode(LED_PIN,OUTPUT);
+ pinMode(SOS_BUTTON,INPUT_PULLUP);
+ simSerial.println("AT"); delay(1000);
+ simSerial.println("AT+CMGF=1"); delay(1000);
+}
+void loop(){
+ while(gpsSerial.available()>0) gps.encode(gpsSerial.read());
+ if(gps.location.isValid() && !baseSet){baseLat=gps.location.lat(); baseLng=gps.location.lng(); baseSet=true;}
+ if(digitalRead(PIR_PIN)==HIGH && millis()-lastPIR>10000){lastPIR=millis(); fogAlert();}
+ if(digitalRead(VIBRATION_PIN)==HIGH){
+   if(baseSet && gps.location.isValid()){
+     float d=TinyGPSPlus::distanceBetween(baseLat,baseLng,gps.location.lat(),gps.location.lng());
+     if(d>10 && millis()-lastTheft>60000){lastTheft=millis(); theftAlert(d);}
+   } delay(1000);
+ }
+ if(digitalRead(SOS_BUTTON)==LOW){sendSOS(); delay(3000);}
+ delay(100);
+}
+void fogAlert(){
+ digitalWrite(LED_PIN,HIGH); digitalWrite(BUZZER_PIN,HIGH); delay(500);
+ digitalWrite(BUZZER_PIN,LOW); delay(500);
+ digitalWrite(BUZZER_PIN,HIGH); delay(500);
+ digitalWrite(BUZZER_PIN,LOW); delay(8000);
+ digitalWrite(LED_PIN,LOW);
+}
+void theftAlert(float d){
+ for(int i=0;i<10;i++){digitalWrite(BUZZER_PIN,HIGH);delay(200);digitalWrite(BUZZER_PIN,LOW);delay(200);}
+ String m="TRINETRA THEFT 793200! Moved "+String(d,0)+"m! https://maps.google.com/?q="+String(gps.location.lat(),6)+","+String(gps.location.lng(),6);
+ sendSMS(police,m); sendSMS(college,m);
+}
+void sendSOS(){
+ String link="https://maps.google.com/?q="+String(gps.location.lat(),6)+","+String(gps.location.lng(),6);
+ String s="TRINETRA SOS! Nini D25-A041 Byndihati 793200! Location: "+link;
+ sendSMS(police,s); sendSMS(college,s);
+}
+void sendSMS(String n,String msg){simSerial.println("AT+CMGS=\""+n+"\""); delay(1000); simSerial.print(msg); delay(500); simSerial.write(26); delay(3000);}
