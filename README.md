@@ -1,5 +1,5 @@
 # TRINETRA - Smart Roadside Safety - Byndihati 793200
-Team: Nini Shadap D25-A041 B.A 3rd Sem Don Bosco College Byndihati Mobile 9863347940
+Team: Nini Shadap D25-A041 B.A 3rd Sem Don Bosco College Byndihati 
 
 ## Problem
 NH-6 Byndihati fog <10m, wrong side overtaking, theft needs gas cutter, 108 delay 45 mins, no SOS, animals.
